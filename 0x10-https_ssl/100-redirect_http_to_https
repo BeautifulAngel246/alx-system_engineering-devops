@@ -33,19 +33,20 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-frontend favourelvischidi-frontend
+frontend http_frontend
         bind *:80
         mode http
         http-request redirect scheme https code 301 unless { ssl_fc }
         http-request set-header X_Forwarded-Proto http
-        default_backend favourelvischidi-backend
+        default_backend http_backend
 
-frontend favourelvischidi-frontend-https
-        bind *:443 ssl crt /etc/haproxy/certs/clickviral.tech.pem
+frontend http_frontend-https
+        bind *:443 ssl crt /etc/haproxy/certs/www.favourelvischidi.tech.pem
         http-request set-header X-Forwarded-Proto https
-        default_backend favourelvischidi-backend
+        default_backend http_backend
 
-backend favourelvischidi-backend
+backend http_backend
         balance roundrobin
         server 519614-web-01 100.25.188.187:80 check
         server 519614-web-02 34.204.60.71:80 check
+
